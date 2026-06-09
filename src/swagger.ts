@@ -194,7 +194,9 @@ const options: Options = {
     },
   },
   // Files containing the per-endpoint @openapi annotations.
-  apis: ["./routes/*.ts"],
+  // Scanned at runtime relative to the working directory (the project root).
+  // Points at the TypeScript sources, which carry the @openapi annotations.
+  apis: ["src/routes/*.ts"],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

@@ -1,21 +1,23 @@
+import path from "node:path";
 import express, {
   type Request,
   type Response,
   type NextFunction,
 } from "express";
 import swaggerUi from "swagger-ui-express";
-import patientRouter from "./routes/patientRouter.js";
-import swaggerSpec from "./swagger.js";
+import patientRouter from "./routes/patientRouter";
+import swaggerSpec from "./swagger";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.send(
-    "API is running. Navigate to /api/v1/patients to interact with the API, or /api-docs for the API documentation.",
-  );
-});
+// Serve static assets (index.html, etc.). Paths are resolved from the working
+// directory (the project root, where `npm start`/`npm run dev` run). The built
+// app uses dist/public (copied by the "postbuild" step); running from source
+// via tsx falls back to src/public. express.static serves index.html for "/".
+app.use(express.static(path.resolve("dist/public")));
+app.use(express.static(path.resolve("src/public")));
 
 // Interactive Swagger/OpenAPI documentation.
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

@@ -12,6 +12,9 @@ node_modules/
 build/
 dist/
 
+# Ignore generated GitHub Pages site
+site/
+
 # Ignore editor-specific files
 .vscode/
 .idea/
