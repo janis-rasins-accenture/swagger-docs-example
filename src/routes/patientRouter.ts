@@ -40,7 +40,7 @@ import {
  *         $ref: '#/components/responses/InternalServerError'
  */
 // GET /patients
-router.get("/patients", async (req, res, next) => {
+router.get("/patients", async (_req, res, next) => {
   try {
     const patients = await getAllPatients();
     res.status(200).json(patients);
