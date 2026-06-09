@@ -1,5 +1,5 @@
 import { generateUniqueId, readData, writeData } from "../helpers.js";
-import { Patient } from "./patientService.types";
+import { type Patient } from "./patientService.types.js";
 
 async function getAllPatients() {
   return await readData();
@@ -21,7 +21,7 @@ async function createNewPatient(patient: Omit<Patient, "id">) {
   return newPatient;
 }
 
-async function updatePatient(id: string, updatedData: Partial<Patient>) {
+async function updatePatient(id: string, updatedData: Patient) {
   const patients = await readData();
   const index = patients.findIndex((p: Patient) => p.id === id);
   if (index === -1) throw new Error("notfound");

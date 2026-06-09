@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Patient Records API</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🩺</text></svg>"
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --fg: #1a1a2e;
+        --muted: #555;
+        --accent: #2d6cdf;
+        --card: #f4f6fb;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        line-height: 1.55;
+        color: var(--fg);
+        background: #fff;
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 1.25rem;
+      }
+      h1 {
+        margin-bottom: 0.25rem;
+      }
+      p.lead {
+        color: var(--muted);
+        margin-top: 0;
+      }
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin: 1.5rem 0 2rem;
+      }
+      .links a {
+        text-decoration: none;
+        background: var(--accent);
+        color: #fff;
+        padding: 0.55rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+      }
+      .links a.secondary {
+        background: var(--card);
+        color: var(--fg);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 0.5rem 0.6rem;
+        border-bottom: 1px solid #e3e6ee;
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      .method {
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>🩺 Patient Records API</h1>
+      <p class="lead">
+        A simple REST API for managing patient medical records.
+      </p>
+
+      <div class="links">
+        <a href="/api-docs">Interactive API docs</a>
+        <a class="secondary" href="/api-docs.json">OpenAPI spec (JSON)</a>
+        <a class="secondary" href="/api/v1/patients">List patients</a>
+      </div>
+
+      <h2>Endpoints</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Path</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="method">GET</td>
+            <td><code>/api/v1/patients</code></td>
+            <td>List all patients</td>
+          </tr>
+          <tr>
+            <td class="method">GET</td>
+            <td><code>/api/v1/patients/{id}</code></td>
+            <td>Get a patient by ID</td>
+          </tr>
+          <tr>
+            <td class="method">POST</td>
+            <td><code>/api/v1/patients</code></td>
+            <td>Create a new patient</td>
+          </tr>
+          <tr>
+            <td class="method">PUT</td>
+            <td><code>/api/v1/patients/{id}</code></td>
+            <td>Update an existing patient</td>
+          </tr>
+          <tr>
+            <td class="method">DELETE</td>
+            <td><code>/api/v1/patients/{id}</code></td>
+            <td>Delete a patient</td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+  </body>
+</html>

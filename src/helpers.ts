@@ -1,8 +1,8 @@
 import fs from "node:fs/promises";
 import { v4 as uuidv4 } from "uuid";
-import { Patient } from "./services/patientService.types";
+import { type Patient } from "./services/patientService.types";
 
-const dataFile = "db.json";
+const dataFile = "./src/db.json";
 
 // Read data from JSON file
 async function readData(): Promise<Patient[]> {
