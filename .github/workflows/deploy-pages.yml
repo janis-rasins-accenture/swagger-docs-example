@@ -1,8 +1,11 @@
 name: Deploy API docs to GitHub Pages
 
 on:
+  # Runs on pushes targeting the default branch
   push:
     branches: [master]
+
+  # Allows run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # Permissions required by the Pages deployment.
@@ -11,63 +14,41 @@ permissions:
   pages: write
   id-token: write
 
-# Allow one concurrent deployment; cancel in-progress runs on new pushes.
+# Allow one concurrent deployment
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build:
+  # Single deploy job since we're just deploying
+  deploy
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          node-version: 22
+          node-version: lts/*
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      # Build the server bundle (Vite SSR -> dist/app.js + dist/public).
       - name: Build
         run: npm run build
 
-      # Smoke test: start the server in the background, confirm it responds,
-      # then stop it. `npm start` runs indefinitely, so it must not block the job.
-      - name: Start and verify server
-        run: |
-          npm start &
-          SERVER_PID=$!
-          for i in $(seq 1 15); do
-            if curl -fsS http://localhost:3000/api/v1/patients > /dev/null; then
-              echo "Server responded successfully."
-              break
-            fi
-            if [ "$i" -eq 15 ]; then
-              echo "Server did not respond in time." >&2
-              kill "$SERVER_PID" 2>/dev/null || true
-              exit 1
-            fi
-            sleep 1
-          done
-          kill "$SERVER_PID" 2>/dev/null || true
+      - name: Setup Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
-          path: dist/public
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
+          # Upload dist folder
+          path: "./dist"
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5

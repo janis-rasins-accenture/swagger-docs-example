@@ -15,6 +15,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   // No client assets / index.html entry — this build targets Node only.
   publicDir: false,
+  base: "/swagger-docs-example/",
   build: {
     ssr: "src/app.ts",
     outDir: "dist",
