@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,63 +12,133 @@
       :root {
         color-scheme: light dark;
         --fg: #1a1a2e;
-        --muted: #555;
+        --muted: #666;
         --accent: #2d6cdf;
-        --card: #f4f6fb;
+        --card-bg: #f5f7fb;
+        --border: #e3e6ee;
+      }
+      * {
+        box-sizing: border-box;
       }
       body {
         margin: 0;
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-        line-height: 1.55;
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        line-height: 1.6;
         color: var(--fg);
         background: #fff;
       }
       main {
-        max-width: 720px;
+        max-width: 900px;
         margin: 0 auto;
-        padding: 3rem 1.25rem;
+        padding: 3rem 1.5rem;
       }
       h1 {
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.5rem;
+        font-size: 2.5rem;
       }
-      p.lead {
+      .lead {
         color: var(--muted);
-        margin-top: 0;
+        font-size: 1.1rem;
+        margin: 0.5rem 0 2rem;
       }
-      .links {
+      .cta-group {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.75rem;
-        margin: 1.5rem 0 2rem;
+        gap: 1rem;
+        margin: 2rem 0 3rem;
       }
-      .links a {
-        text-decoration: none;
-        background: var(--accent);
-        color: #fff;
-        padding: 0.55rem 1rem;
-        border-radius: 8px;
+      .btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
         font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+        border: 2px solid transparent;
       }
-      .links a.secondary {
-        background: var(--card);
+      .btn-primary {
+        background: var(--accent);
+        color: white;
+      }
+      .btn-primary:hover {
+        background: #1f4fa8;
+        transform: translateY(-1px);
+      }
+      .btn-secondary {
+        background: var(--card-bg);
         color: var(--fg);
+        border-color: var(--border);
+      }
+      .btn-secondary:hover {
+        background: #eff2f7;
+      }
+      h2 {
+        margin-top: 3rem;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
       }
       table {
         width: 100%;
         border-collapse: collapse;
+        margin: 1rem 0;
         font-size: 0.95rem;
       }
-      th,
-      td {
+      th {
+        background: var(--card-bg);
         text-align: left;
-        padding: 0.5rem 0.6rem;
-        border-bottom: 1px solid #e3e6ee;
+        padding: 0.75rem;
+        font-weight: 600;
+        border-bottom: 2px solid var(--border);
+      }
+      td {
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border);
+      }
+      tr:hover {
+        background: var(--card-bg);
       }
       code {
-        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-family: ui-monospace, "SF Mono", Monaco, Menlo, monospace;
+        background: var(--card-bg);
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-size: 0.9em;
       }
       .method {
+        display: inline-block;
         font-weight: 700;
+        padding: 0.25rem 0.5rem;
+        border-radius: 3px;
+        font-size: 0.85rem;
+      }
+      .get {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+      .post {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .put {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .delete {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      footer {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.9rem;
       }
     </style>
   </head>
@@ -76,13 +146,15 @@
     <main>
       <h1>🩺 Patient Records API</h1>
       <p class="lead">
-        A simple REST API for managing patient medical records.
+        A REST API for managing patient medical records with full OpenAPI
+        documentation.
       </p>
 
-      <div class="links">
-        <a href="/api-docs">Interactive API docs</a>
-        <a class="secondary" href="/api-docs.json">OpenAPI spec (JSON)</a>
-        <a class="secondary" href="/api/v1/patients">List patients</a>
+      <div class="cta-group">
+        <a href="./docs" class="btn btn-primary">📖 API Documentation</a>
+        <a href="./openapi.json" class="btn btn-secondary"
+          >📋 OpenAPI Spec (JSON)</a
+        >
       </div>
 
       <h2>Endpoints</h2>
@@ -96,32 +168,61 @@
         </thead>
         <tbody>
           <tr>
-            <td class="method">GET</td>
+            <td><span class="method get">GET</span></td>
             <td><code>/api/v1/patients</code></td>
             <td>List all patients</td>
           </tr>
           <tr>
-            <td class="method">GET</td>
+            <td><span class="method get">GET</span></td>
             <td><code>/api/v1/patients/{id}</code></td>
             <td>Get a patient by ID</td>
           </tr>
           <tr>
-            <td class="method">POST</td>
+            <td><span class="method post">POST</span></td>
             <td><code>/api/v1/patients</code></td>
             <td>Create a new patient</td>
           </tr>
           <tr>
-            <td class="method">PUT</td>
+            <td><span class="method put">PUT</span></td>
             <td><code>/api/v1/patients/{id}</code></td>
             <td>Update an existing patient</td>
           </tr>
           <tr>
-            <td class="method">DELETE</td>
+            <td><span class="method delete">DELETE</span></td>
             <td><code>/api/v1/patients/{id}</code></td>
             <td>Delete a patient</td>
           </tr>
         </tbody>
       </table>
+
+      <h2>Patient Schema</h2>
+      <pre><code>{
+  "id": "string (UUID v4, read-only)",
+  "patient_id": "string",
+  "patient_name": "string",
+  "gender": "Male | Female | Other",
+  "date_of_birth": "string (YYYY-MM-DD)",
+  "visit_date": "string (YYYY-MM-DD)",
+  "symptoms": "string",
+  "diagnosis": "string",
+  "medication": "string",
+  "dosage": "string"
+}</code></pre>
+
+      <h2>Getting Started</h2>
+      <p>
+        Visit the <a href="./docs">API Documentation</a> for interactive Swagger
+        UI where you can explore all endpoints and try them out. Download the
+        <a href="./openapi.json">OpenAPI specification</a>
+        to integrate with your tools.
+      </p>
+
+      <footer>
+        <p>
+          Patient Records API — Built with Express, TypeScript, and
+          Swagger/OpenAPI
+        </p>
+      </footer>
     </main>
   </body>
 </html>

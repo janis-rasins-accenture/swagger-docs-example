@@ -1,20 +1,35 @@
-name: Build and verify
+name: Build and deploy
 
 on:
   push:
     branches: [master]
   workflow_dispatch:
 
+# Permissions required by the Pages deployment.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment; cancel in-progress runs on new pushes.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
+  build:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
+        uses: actions/setup-node@v4
         with:
+          node-version: 22
           node-version: 22
           cache: npm
 
@@ -22,12 +37,12 @@ jobs:
         run: npm ci
 
       # Build the server bundle (Vite SSR -> dist/app.js + dist/public).
-      - name: Build
+      - name: Build server
         run: npm run build
 
       # Smoke test: start the server in the background, confirm it responds,
       # then stop it. `npm start` runs indefinitely, so it must not block the job.
-      - name: Start and verify server
+      - name: Verify server starts
         run: |
           npm start &
           SERVER_PID=$!
@@ -44,3 +59,23 @@ jobs:
             sleep 1
           done
           kill "$SERVER_PID" 2>/dev/null || true
+
+      # Build static GitHub Pages site (landing page + interactive docs + openapi.json).
+      - name: Build pages
+        run: npm run pages:build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
