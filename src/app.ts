@@ -22,8 +22,10 @@ app.use(express.static(path.resolve("src/public")));
 // Interactive Swagger/OpenAPI documentation.
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Raw OpenAPI specification (JSON).
-app.get("/api-docs.json", (req, res) => {
+// Raw OpenAPI specification (JSON). Exposed at /openapi.json to match the
+// static GitHub Pages site (the landing page and docs/index.html reference
+// `./openapi.json` / `../openapi.json`); /api-docs.json is kept as an alias.
+app.get(["/openapi.json", "/api-docs.json"], (_req, res) => {
   res.json(swaggerSpec);
 });
 
